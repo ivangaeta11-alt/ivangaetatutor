@@ -1,11 +1,11 @@
 
 import React from 'react';
-import Hero from './Hero';
-import Manifesto from './Manifesto';
-import Method from './Method';
-import Features from './Features';
-import Testimonials from './Testimonials';
-import Contact from './Contact';
+import Hero from '../sections/Hero';
+import Manifesto from '../sections/Manifesto';
+import Method from '../sections/Method';
+import Features from '../sections/Features';
+import Testimonials from '../sections/Testimonials';
+import Contact from '../sections/Contact';
 
 interface HomePageProps {
   onNavigateRisorse: () => void;

@@ -1,8 +1,11 @@
-
 import React from 'react';
+
+// Layout components (same folder)
 import Navbar from './Navbar';
 import Footer from './Footer';
-import FloatingContact from './FloatingContact';
+
+// Sections (different folder)
+import FloatingContact from '../sections/FloatingContact';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -11,13 +14,20 @@ interface LayoutProps {
   onContact: () => void;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, onContact }) => {
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  currentView,
+  setView,
+  onContact
+}) => {
   return (
     <div className="min-h-screen flex flex-col relative">
       <Navbar setView={setView} currentView={currentView} />
+      
       <main className="flex-grow">
         {children}
       </main>
+      
       <Footer setView={setView} onContact={onContact} />
       <FloatingContact />
     </div>
@@ -25,3 +35,4 @@ const Layout: React.FC<LayoutProps> = ({ children, currentView, setView, onConta
 };
 
 export default Layout;
+

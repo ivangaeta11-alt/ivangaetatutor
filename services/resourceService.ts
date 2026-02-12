@@ -1,8 +1,8 @@
 
 import { Risorsa } from '../App';
 
-const SUPABASE_URL = 'https://qemgziytooogtnlzdpjq.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlbWd6aXl0b29vZ3RubHpkcGpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkxNzY0NzcsImV4cCI6MjA4NDc1MjQ3N30.1gWYHc-Z5PZueQ6pjjlBHJQonM-XHbajcDQP_U1BnqI'; 
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const resourceService = {
   /**
@@ -12,7 +12,7 @@ export const resourceService = {
   async getAll(): Promise<Risorsa[]> {
     try {
       const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/Resources?select=*&order=title.asc`,
+        `${SUPABASE_URL}/rest/v1/resources?select=*&order=title.asc`,
         {
           method: 'GET',
           headers: {
@@ -52,7 +52,7 @@ export const resourceService = {
    */
   async create(data: Omit<Risorsa, 'id'>): Promise<void> {
     try {
-      const response = await fetch(`${SUPABASE_URL}/rest/v1/Resources`, {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/resources`, {
         method: 'POST',
         headers: {
           'apikey': SUPABASE_KEY,
@@ -78,7 +78,7 @@ export const resourceService = {
    */
   async delete(id: string): Promise<void> {
     try {
-      const response = await fetch(`${SUPABASE_URL}/rest/v1/Resources?id=eq.${id}`, {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/resources?id=eq.${id}`, {
         method: 'DELETE',
         headers: {
           'apikey': SUPABASE_KEY,
