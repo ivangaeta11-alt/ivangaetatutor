@@ -4,12 +4,12 @@ import { Mail, MapPin, Send, MessageCircle } from 'lucide-react';
 
 const Contact: React.FC = () => {
   return (
-    <section id="contatti" className="py-24 bg-gray-50 px-4 sm:px-6">
+    <section id="contatti" className="py-24 bg-gradient-to-b from-white to-slate-50/50 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-[2rem] md:rounded-[3rem] shadow-2xl overflow-hidden border border-gray-100">
+        <div className="bg-white rounded-3xl md:rounded-[2rem] shadow-xl shadow-slate-200/30 overflow-hidden border border-slate-100">
           <div className="grid lg:grid-cols-2">
             {/* Colonna Info di Contatto */}
-            <div className="p-8 sm:p-12 lg:p-20 bg-blue-600 text-white">
+            <div className="p-8 sm:p-12 lg:p-20 bg-gradient-to-br from-blue-600 to-blue-700 text-white">
               <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-white">Iniziamo a conoscerci</h2>
               <p className="text-blue-100 text-lg mb-12">
                 Descrivimi il tuo percorso e l'esame che vuoi superare. Ti risponderò entro 24 ore per fissare un colloquio conoscitivo gratuito.
@@ -65,27 +65,27 @@ const Contact: React.FC = () => {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">Nome</label>
-                    <input type="text" className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-600 outline-none transition-all" placeholder="Il tuo nome" />
+                    <input type="text" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 outline-none transition-all" placeholder="Il tuo nome" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">Email</label>
-                    <input type="email" className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-600 outline-none transition-all" placeholder="La tua email" />
+                    <input type="email" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 outline-none transition-all" placeholder="La tua email" />
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Il tuo obiettivo</label>
-                  <select className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-600 outline-none transition-all">
+                  <select className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 outline-none transition-all">
                     <option>Semestre Filtro Medicina</option>
                     <option>Preparazione TOLC</option>
                     <option>Esame Universitario</option>
-                    <option>Altro</option>
+                    <option>Scuole superiori</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Messaggio</label>
-                  <textarea rows={4} className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-600 outline-none transition-all" placeholder="Parlami del tuo percorso..."></textarea>
+                  <textarea rows={4} className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 outline-none transition-all resize-none" placeholder="Parlami del tuo percorso..."></textarea>
                 </div>
-                <button type="submit" className="w-full py-5 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-200 flex items-center justify-center gap-2">
+                <button type="submit" className="w-full h-14 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all duration-300 shadow-lg shadow-blue-900/20 hover:shadow-xl flex items-center justify-center gap-2">
                   Invia Messaggio <Send className="w-5 h-5" />
                 </button>
               </form>

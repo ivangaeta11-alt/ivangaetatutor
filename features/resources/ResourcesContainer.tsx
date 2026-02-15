@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { resourceService } from "../../services/resourceService";
 import ResourcesPage from "../../pages/ResourcesPage";
 import { AlertCircle, RefreshCw } from "lucide-react";
-import { Risorsa } from "../../App";
+import { Risorsa } from "../../types/resource";
 
 interface ResourcesContainerProps {
   onGoToContact: () => void;
@@ -15,6 +15,7 @@ interface ResourcesContainerProps {
  * - Fetching resources from backend
  * - Managing loading state
  * - Managing error state
+ * - Preventing race conditions and memory leaks
  *
  * Does NOT handle:
  * - Layout
@@ -28,25 +29,70 @@ const ResourcesContainer: React.FC<ResourcesContainerProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchResources = async () => {
+  const isMountedRef = useRef(true);
+  const abortControllerRef = useRef<AbortController | null>(null);
+
+  const fetchResources = useCallback(async () => {
+    const hasSupabase =
+      import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    if (!hasSupabase) {
+      setLoading(false);
+      setError(
+        "Configurazione Supabase mancante. Aggiungi VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY nel file .env"
+      );
+      return;
+    }
+
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    const abortController = new AbortController();
+    abortControllerRef.current = abortController;
+
     setLoading(true);
     setError(null);
 
     try {
-      const data = await resourceService.getAll();
+      const data = await resourceService.getAll(abortController.signal);
+
+      if (!isMountedRef.current || abortController.signal.aborted) {
+        return;
+      }
+
       setResources(data);
-    } catch (err: any) {
-      setError(
-        err.message || "Unexpected error while fetching resources."
-      );
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name === "AbortError") {
+        return;
+      }
+
+      if (isMountedRef.current) {
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Errore imprevisto durante il recupero delle risorse.";
+        setError(message);
+      }
     } finally {
-      setLoading(false);
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
     }
-  };
+  }, []);
 
   useEffect(() => {
+    isMountedRef.current = true;
     fetchResources();
-  }, []);
+
+    return () => {
+      isMountedRef.current = false;
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+        abortControllerRef.current = null;
+      }
+    };
+  }, [fetchResources]);
 
   if (loading) {
     return (

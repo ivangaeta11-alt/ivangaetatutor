@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Brain, Download, Layout, Database, FileText, AlertCircle, ChevronRight, PlayCircle } from 'lucide-react';
-import { Risorsa } from '../App';
+import { Download, AlertCircle, ChevronRight, PlayCircle } from 'lucide-react';
+import { Risorsa } from '../types/resource';
 
 interface RisorsePageProps {
   risorse: Risorsa[];
@@ -9,19 +9,8 @@ interface RisorsePageProps {
 }
 
 const RisorsePage: React.FC<RisorsePageProps> = ({ risorse, onGoToContact }) => {
-  const categories = ["Fisica", "Matematica", "Metodo di Studio"] as const;
-  
-  const getIconForCategory = (cat: string) => {
-    switch (cat) {
-      case "Fisica": return <Database className="w-5 h-5" />;
-      case "Matematica": return <Layout className="w-5 h-5" />;
-      case "Metodo di Studio": return <Brain className="w-5 h-5" />;
-      default: return <FileText className="w-5 h-5" />;
-    }
-  };
-
-  const getColorClass = (cat: string) => {
-    switch (cat) {
+  const getSubjectStyle = (subject: string) => {
+    switch (subject) {
       case "Fisica": return "text-blue-600 bg-blue-50 border-blue-100";
       case "Matematica": return "text-emerald-600 bg-emerald-50 border-emerald-100";
       case "Metodo di Studio": return "text-purple-600 bg-purple-50 border-purple-100";
@@ -67,64 +56,50 @@ const RisorsePage: React.FC<RisorsePageProps> = ({ risorse, onGoToContact }) => 
             Area <span className="gradient-text">Risorse Gratuite</span>
           </h1>
           <p className="text-xl text-slate-500 max-w-2xl mx-auto font-light leading-relaxed">
-            Dispense, video lezioni e schemi per il tuo successo accademico. <br />
-            Database aggiornato in tempo reale per il <span className="font-semibold text-slate-700">semestre filtro</span>.
+            <span className="font-semibold text-slate-600">Dispense</span>, <span className="font-semibold text-slate-600">simulazioni</span> e <span className="font-semibold text-slate-600">video</span> per supportare il tuo percorso di studio. <br />
+            Materiale <span className="font-semibold text-slate-600">gratuito</span> e sempre <span className="font-semibold text-slate-600">aggiornato</span> a tua disposizione.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-10 mb-24">
-          {categories.map((cat) => {
-            const items = risorse.filter(r => r.subject === cat);
-            const style = getColorClass(cat);
-            
-            return (
-              <div key={cat} className="flex flex-col">
-                <div className="flex items-center gap-3 mb-8">
-                  <div className={`p-3 rounded-xl border shadow-sm ${style}`}>
-                    {getIconForCategory(cat)}
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900">{cat}</h3>
-                </div>
-                
-                <div className="space-y-4">
-                  {items.map((item) => (
-                    <a 
-                      key={item.id} 
-                      href={item.url} 
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => handleAction(e, item)}
-                      className="group p-5 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-300 block transform hover:-translate-y-1 cursor-pointer"
-                    >
-                      <div className="flex justify-between items-start mb-3">
-                        <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg border ${item.type === 'Video' ? 'text-rose-600 bg-rose-50 border-rose-100' : 'text-slate-400 bg-slate-50 border-slate-100'}`}>
-                          {item.type}
-                        </span>
-                        <div className="text-blue-600 bg-blue-50 p-1.5 rounded-lg opacity-40 group-hover:opacity-100 transition-all">
-                          {item.type === 'Video' ? <PlayCircle className="w-4 h-4" /> : <Download className="w-4 h-4" />}
-                        </div>
-                      </div>
-                      <h4 className="font-bold text-slate-800 mb-1 group-hover:text-blue-600 transition-colors leading-tight">
-                        {item.title}
-                      </h4>
-                      <p className="text-[11px] text-slate-400 font-medium italic">
-                        {item.type === 'Video' ? 'Apri video esterno' : 'Scarica PDF'}
-                      </p>
-                    </a>
-                  ))}
-
-                  {items.length === 0 && (
-                    <div className="p-10 border-2 border-dashed border-slate-200 rounded-[2rem] text-center flex flex-col items-center gap-3">
-                      <AlertCircle className="w-8 h-8 text-slate-200" />
-                      <p className="text-slate-400 text-sm font-medium leading-tight">
-                        Materiale in fase di caricamento.
-                      </p>
-                    </div>
-                  )}
-                </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-24">
+          {risorse.map((item) => (
+            <a
+              key={item.id}
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => handleAction(e, item)}
+              className="group p-5 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-300 block transform hover:-translate-y-1 cursor-pointer"
+            >
+              <div className="flex justify-between items-start mb-3">
+                <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg border ${getSubjectStyle(item.subject)}`}>
+                  {item.subject}
+                </span>
+                <span className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-500 opacity-80 group-hover:opacity-100 group-hover:text-blue-600 transition-all">
+                  {item.type === 'Video' ? <PlayCircle className="w-4 h-4 text-rose-500" /> : <Download className="w-4 h-4 text-blue-600" />}
+                  {item.type}
+                </span>
               </div>
-            );
-          })}
+              <h4 className="font-bold text-slate-800 mb-1 group-hover:text-blue-600 transition-colors leading-tight">
+                {item.title}
+              </h4>
+              {item.description ? (
+                <p className="text-sm text-slate-500 leading-snug line-clamp-2">
+                  {item.description}
+                </p>
+              ) : (
+                <p className="text-[11px] text-slate-400 font-medium italic">
+                  {item.type === 'Video' ? 'Apri video esterno' : 'Scarica PDF'}
+                </p>
+              )}
+            </a>
+          ))}
+          {risorse.length === 0 && (
+            <div className="col-span-full p-16 border-2 border-dashed border-slate-200 rounded-[2rem] text-center flex flex-col items-center gap-3">
+              <AlertCircle className="w-10 h-10 text-slate-200" />
+              <p className="text-slate-400 font-medium">Materiale in fase di caricamento.</p>
+            </div>
+          )}
         </div>
 
         <div className="bg-white rounded-[3rem] p-8 md:p-16 border border-slate-100 shadow-xl flex flex-col md:flex-row items-center gap-10">

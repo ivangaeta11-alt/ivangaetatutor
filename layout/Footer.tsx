@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { Instagram, Linkedin, Twitter, MessageCircle } from 'lucide-react';
 
 interface FooterProps {
   setView: (view: 'home' | 'risorse') => void;
@@ -64,21 +63,6 @@ const Footer: React.FC<FooterProps> = ({ setView, onContact }) => {
                   Accanto all’attività di tutoraggio, frequento la laurea magistrale in <span className="text-blue-600/70 not-italic font-medium">Astroparticle Physics</span>, mantenendo un contatto costante con il metodo e il livello di richiesta della formazione universitaria avanzata.
                 </p>
               </div>
-            </div>
-
-            <div className="flex gap-3">
-              <a href="https://wa.me/393495519055" target="_blank" rel="noopener noreferrer" className="p-2.5 bg-gray-50 rounded-xl text-gray-400 hover:bg-emerald-500 hover:text-white transition-all duration-300">
-                <MessageCircle className="w-5 h-5" />
-              </a>
-              <a href="#" className="p-2.5 bg-gray-50 rounded-xl text-gray-400 hover:bg-blue-600 hover:text-white transition-all duration-300">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="p-2.5 bg-gray-50 rounded-xl text-gray-400 hover:bg-blue-600 hover:text-white transition-all duration-300">
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a href="#" className="p-2.5 bg-gray-50 rounded-xl text-gray-400 hover:bg-blue-600 hover:text-white transition-all duration-300">
-                <Twitter className="w-5 h-5" />
-              </a>
             </div>
           </div>
 

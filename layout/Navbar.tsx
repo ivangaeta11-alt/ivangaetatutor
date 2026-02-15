@@ -23,7 +23,7 @@ const Navbar: React.FC<NavbarProps> = ({ setView, currentView }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLinkClick = (e: React.MouseEvent, target: 'home' | 'risorse' | string) => {
+  const handleLinkClick = (e: React.MouseEvent<HTMLElement>, target: 'home' | 'risorse' | string) => {
     e.preventDefault();
     setIsOpen(false);
     
@@ -48,7 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({ setView, currentView }) => {
     <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled || currentView !== 'home' || isOpen ? 'glass-morphism shadow-md py-2' : 'bg-transparent py-4'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center cursor-pointer group" onClick={(e) => handleLinkClick(e as any, 'home')}>
+          <div className="flex items-center cursor-pointer group" onClick={(e) => handleLinkClick(e, 'home')}>
             <div className="relative w-12 h-12 mr-3 overflow-hidden rounded-full border-2 border-blue-400 shadow-sm group-hover:border-blue-600 transition-all bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center">
               {!imgError ? (
                 <img 
@@ -72,7 +72,7 @@ const Navbar: React.FC<NavbarProps> = ({ setView, currentView }) => {
               <a 
                 href="#contatti" 
                 onClick={(e) => handleLinkClick(e, 'contatti')}
-                className="bg-blue-600 text-white px-6 py-2.5 rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-200 font-bold"
+                className="bg-blue-600 text-white px-6 py-2.5 rounded-xl hover:bg-blue-700 transition-all duration-200 shadow-md shadow-blue-900/20 font-bold"
               >
                 Contattami
               </a>
