@@ -9,8 +9,8 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({ setView, onContact }) => {
   const [imgError, setImgError] = useState(false);
   
-  // Percorso corretto con estensione .jpeg e cache-busting
-  const profileImg = "./ivan_gaeta_profile.jpeg?v=1";
+  // Immagine in public/ per funzionare anche in produzione (path assoluto da root)
+  const profileImg = `${import.meta.env.BASE_URL}ivan_gaeta_profile.jpeg`;
 
   const handleHomeClick = (e: React.MouseEvent) => {
     e.preventDefault();
