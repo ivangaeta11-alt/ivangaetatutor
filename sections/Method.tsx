@@ -27,7 +27,7 @@ const methods = [
 
 const Method: React.FC = () => {
   return (
-    <section id="metodo" className="py-24 bg-white px-6">
+    <section id="metodo" className="pt-10 pb-10 md:pt-12 md:pb-12 bg-white px-6">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">Il metodo di lavoro</h2>

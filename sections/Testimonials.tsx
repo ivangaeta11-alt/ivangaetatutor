@@ -260,7 +260,7 @@ const Testimonials: React.FC = () => {
   };
 
   return (
-    <section id="recensioni" className="py-24 bg-white relative overflow-hidden">
+    <section id="recensioni" className="pt-10 pb-10 md:pt-12 md:pb-12 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
           <div className="text-left">

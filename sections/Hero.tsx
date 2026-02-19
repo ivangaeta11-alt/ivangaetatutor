@@ -16,7 +16,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigateRisorse }) => {
   };
 
   return (
-    <section className="relative pt-32 pb-12 lg:pt-44 lg:pb-20 overflow-hidden bg-white">
+    <section className="relative pt-28 pb-6 lg:pt-36 lg:pb-8 overflow-hidden bg-white">
       {/* Sfondo con gradiente soft */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-slate-50/80 via-white to-white" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[480px] bg-gradient-to-b from-blue-100/40 to-transparent rounded-full blur-3xl -z-10" />

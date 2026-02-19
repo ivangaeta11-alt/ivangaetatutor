@@ -1,10 +1,50 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Mail, MapPin, Send, MessageCircle } from 'lucide-react';
+import { messageService } from '../services/messageService';
+
+const OBIETTIVI = [
+  'Semestre Filtro Medicina',
+  'Preparazione TOLC',
+  'Esame Universitario',
+  'Scuole superiori',
+] as const;
 
 const Contact: React.FC = () => {
+  const [form, setForm] = useState({ nome: '', email: '', obiettivo: OBIETTIVI[0], messaggio: '' });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setError(null);
+    if (!form.nome.trim() || !form.email.trim() || !form.messaggio.trim()) {
+      setError('Compila tutti i campi obbligatori.');
+      return;
+    }
+    setLoading(true);
+    messageService
+      .send({
+        nome: form.nome,
+        email: form.email,
+        obiettivo: form.obiettivo,
+        messaggio: form.messaggio,
+      })
+      .then(() => {
+        setSent(true);
+        setForm({ nome: '', email: '', obiettivo: OBIETTIVI[0], messaggio: '' });
+      })
+      .catch((err) => {
+        setError(err instanceof Error ? err.message : 'Errore durante l\'invio. Riprova.');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return (
-    <section id="contatti" className="py-24 bg-gradient-to-b from-white to-slate-50/50 px-4 sm:px-6">
+    <section id="contatti" className="pt-10 pb-16 md:pt-12 md:pb-20 bg-gradient-to-b from-white to-slate-50/50 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-3xl md:rounded-[2rem] shadow-xl shadow-slate-200/30 overflow-hidden border border-slate-100">
           <div className="grid lg:grid-cols-2">
@@ -61,34 +101,78 @@ const Contact: React.FC = () => {
 
             {/* Colonna Form */}
             <div className="p-8 sm:p-12 lg:p-20">
-              <form className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Nome</label>
-                    <input type="text" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 outline-none transition-all" placeholder="Il tuo nome" />
+              {sent ? (
+                <div className="py-8 px-4 text-center rounded-2xl bg-emerald-50 border border-emerald-100">
+                  <p className="text-xl font-bold text-emerald-700">Messaggio inviato con successo.</p>
+                  <p className="text-slate-600 mt-2">Ti risponderò entro 24 ore.</p>
+                  <button
+                    type="button"
+                    onClick={() => setSent(false)}
+                    className="mt-6 text-blue-600 font-bold hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 rounded"
+                  >
+                    Invia un altro messaggio
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} method="post" action="#" className="space-y-6" noValidate>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">Nome</label>
+                      <input
+                        type="text"
+                        value={form.nome}
+                        onChange={(e) => setForm((f) => ({ ...f, nome: e.target.value }))}
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 outline-none transition-all"
+                        placeholder="Il tuo nome"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">Email</label>
+                      <input
+                        type="email"
+                        value={form.email}
+                        onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 outline-none transition-all"
+                        placeholder="La tua email"
+                        required
+                      />
+                    </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Email</label>
-                    <input type="email" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 outline-none transition-all" placeholder="La tua email" />
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Il tuo obiettivo</label>
+                    <select
+                      value={form.obiettivo}
+                      onChange={(e) => setForm((f) => ({ ...f, obiettivo: e.target.value as typeof OBIETTIVI[number] }))}
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 outline-none transition-all"
+                      required
+                    >
+                      {OBIETTIVI.map((o) => (
+                        <option key={o} value={o}>{o}</option>
+                      ))}
+                    </select>
                   </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Il tuo obiettivo</label>
-                  <select className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 outline-none transition-all">
-                    <option>Semestre Filtro Medicina</option>
-                    <option>Preparazione TOLC</option>
-                    <option>Esame Universitario</option>
-                    <option>Scuole superiori</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Messaggio</label>
-                  <textarea rows={4} className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 outline-none transition-all resize-none" placeholder="Parlami del tuo percorso..."></textarea>
-                </div>
-                <button type="submit" className="w-full h-14 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all duration-300 shadow-lg shadow-blue-900/20 hover:shadow-xl flex items-center justify-center gap-2">
-                  Invia Messaggio <Send className="w-5 h-5" />
-                </button>
-              </form>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Messaggio</label>
+                    <textarea
+                      rows={4}
+                      value={form.messaggio}
+                      onChange={(e) => setForm((f) => ({ ...f, messaggio: e.target.value }))}
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 outline-none transition-all resize-none"
+                      placeholder="Parlami del tuo percorso..."
+                      required
+                    />
+                  </div>
+                  {error && <p className="text-red-600 text-sm">{error}</p>}
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full h-14 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all duration-300 shadow-lg shadow-blue-900/20 hover:shadow-xl disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {loading ? 'Invio in corso...' : 'Invia Messaggio'} <Send className="w-5 h-5" />
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>
