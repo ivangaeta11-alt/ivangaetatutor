@@ -338,7 +338,7 @@ const Testimonials: React.FC = () => {
               </button>
             </div>
             {submitSuccess ? (
-              <p className="text-emerald-600 font-medium">Recensione inviata! Sarà visibile dopo l&apos;approvazione.</p>
+              <p className="text-emerald-600 font-medium">Grazie per il tuo feedback! La recensione sarà pubblicata a breve.</p>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
